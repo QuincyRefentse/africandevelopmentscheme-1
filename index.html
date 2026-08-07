@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADS Fintech ·</title>
+    <title>ADS Fintech · Donate</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -32,765 +32,949 @@
             --gray-500: #667085;
             --shadow-xl: 0 32px 64px rgba(0,0,0,0.12);
             --shadow-lg: 0 20px 48px rgba(0,0,0,0.08);
-        }
-
-        html {
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            height: 100%;
-            overflow-y: scroll;
+            --radius-xl: 48px;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--off-white);
+            background: linear-gradient(135deg, #f9f6f0 0%, #ffffff 100%);
             color: var(--black);
             line-height: 1.5;
-            height: 100%;
-            position: relative;
-        }
-
-        /* all three sections snap — footer is now a full snap page */
-        .snap-page {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
             min-height: 100vh;
-            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 16px;
+            margin: 0;
             position: relative;
-            background: linear-gradient(145deg, #ffffff 0%, #f5f7fa 100%);
-            padding: 24px 0;
         }
 
-        .page-contact {
-            background: linear-gradient(135deg, #f9f6f0 0%, #ffffff 100%);
-            position: relative;
-        }
-        .page-contact::before {
+        /* Decorative background */
+        body::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 0% 30%, rgba(139,115,85,0.02) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 32px;
-            width: 100%;
-            z-index: 5;
-        }
-
-        /* ===== FULL-HEIGHT TOP-RIGHT SCROLL INDICATOR ===== */
-        .scroll-indicator-full {
             position: fixed;
-            top: 0;
-            right: 32px;
-            width: 48px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(139,115,85,0.04) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 50%, rgba(139,115,85,0.02) 0%, transparent 50%);
             pointer-events: none;
+            z-index: 0;
         }
 
-        .indicator-inner {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            pointer-events: auto;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            padding: 20px 0;
+        /* Floating decorative elements */
+        .float-icon {
+            position: fixed;
+            font-size: 2rem;
+            color: rgba(139,115,85,0.06);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .float-icon:nth-child(1) { top: 10%; left: 5%; font-size: 4rem; animation: float 8s ease-in-out infinite; }
+        .float-icon:nth-child(2) { bottom: 15%; right: 5%; font-size: 3.5rem; animation: float 10s ease-in-out infinite reverse; }
+        .float-icon:nth-child(3) { top: 50%; left: 2%; font-size: 2.5rem; animation: float 12s ease-in-out infinite 2s; }
+        .float-icon:nth-child(4) { bottom: 30%; right: 2%; font-size: 3rem; animation: float 9s ease-in-out infinite 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* ===== MAIN DONATION CONTAINER - FITS IN ONE VIEWPORT ===== */
+        .donation-wrapper {
+            max-width: 780px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            max-height: 98vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .donation-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+        .donation-wrapper::-webkit-scrollbar-track {
             background: transparent;
         }
-
-        .indicator-inner:hover {
-            transform: scale(1.05);
-        }
-
-        .scroll-line-extended {
-            width: 2px;
-            height: 160px;
-            background: linear-gradient(180deg, 
-                var(--primary) 0%, 
-                var(--primary-light) 40%, 
-                rgba(139, 115, 85, 0.3) 80%,
-                transparent 100%);
-            border-radius: 4px;
-            position: relative;
-            box-shadow: 0 0 12px rgba(139, 115, 85, 0.3);
-        }
-
-        .moving-dot {
-            width: 12px;
-            height: 12px;
-            background: var(--primary);
-            border-radius: 50%;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 0;
-            animation: glideDownFull 2.4s cubic-bezier(0.45, 0.2, 0.2, 1) infinite;
-            box-shadow: 0 0 16px var(--primary-light);
-            border: 2px solid rgba(255,255,255,0.7);
-        }
-
-        .moving-dot::after {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: -8px;
-            right: -8px;
-            bottom: -8px;
-            background: rgba(139, 115, 85, 0.2);
-            border-radius: 50%;
-            z-index: -1;
-            animation: softPulseFull 2.4s infinite;
-        }
-
-        .scroll-label {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-size: 0.8rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--primary-dark);
-            font-weight: 600;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-            padding: 4px 2px;
-            background: rgba(255,255,255,0.4);
-            backdrop-filter: blur(2px);
-            border-radius: 30px;
-        }
-
-        .indicator-inner:hover .scroll-label {
-            opacity: 1;
-            color: var(--primary);
-        }
-
-        @keyframes glideDownFull {
-            0% { top: 0%; opacity: 1; transform: translateX(-50%) scale(1); }
-            50% { top: 90%; opacity: 0.9; transform: translateX(-50%) scale(1.15); }
-            100% { top: 0%; opacity: 1; transform: translateX(-50%) scale(1); }
-        }
-
-        @keyframes softPulseFull {
-            0% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.8); opacity: 0.1; }
-            100% { transform: scale(1); opacity: 0.3; }
-        }
-
-        @media (max-width: 900px) {
-            .scroll-indicator-full { right: 20px; }
-            .scroll-line-extended { height: 140px; }
-            .scroll-label { font-size: 0.7rem; letter-spacing: 3px; }
-        }
-
-        @media (max-width: 600px) {
-            .scroll-indicator-full { right: 12px; width: 36px; }
-            .scroll-line-extended { height: 120px; }
-            .moving-dot { width: 10px; height: 10px; }
-            .scroll-label { font-size: 0.6rem; letter-spacing: 2px; padding: 4px 0; }
-        }
-
-        /* --- page 1 card (headline) --- */
-        .headline-card {
-            max-width: 880px;
-            width: 100%;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 48px;
-            box-shadow: var(--shadow-xl);
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.6);
-            animation: floatIn 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-origin: center;
-            padding: 48px 48px 56px;
-        }
-
-        .pre-headline span {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: var(--primary);
-            font-weight: 600;
-            background: var(--primary-subtle);
-            padding: 6px 18px;
-            border-radius: 40px;
-            display: inline-block;
-            margin-bottom: 30px;
-        }
-
-        .logo-image {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            width: 240px;
-            margin: 0 auto 24px;
-        }
-
-        .logo-img-placeholder {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        .headline-main {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--navy);
-            line-height: 1.1;
-            margin-bottom: 24px;
-            letter-spacing: -0.02em;
-        }
-        .headline-main span {
-            color: var(--primary);
-            display: block;
-            font-size: 2.6rem;
-            font-weight: 500;
-            margin-top: 8px;
-        }
-
-        .headline-message-page {
-            background: var(--white);
-            border-radius: 32px;
-            padding: 32px;
-            box-shadow: 0 12px 28px -8px rgba(139,115,85,0.2);
-            border: 1px solid rgba(139,115,85,0.15);
-            margin-top: 24px;
-        }
-
-        .message-row {
-            display: flex;
-            gap: 18px;
-            align-items: flex-start;
-        }
-        .message-icon {
-            color: var(--primary);
-            font-size: 1.4rem;
-            width: 32px;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-        .message-content {
-            flex: 1;
-            font-size: 1.2rem;
-            color: var(--gray-500);
-        }
-        .message-content strong {
-            color: var(--navy);
-            font-weight: 700;
-        }
-        .launch-badge {
-            background: var(--primary-subtle);
-            padding: 4px 14px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--primary-dark);
-            display: inline-block;
-            margin-left: 12px;
-            white-space: nowrap;
-            border: 1px solid var(--primary-light);
-        }
-        .divider-light {
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
-            margin: 24px 0;
-        }
-
-        @media (max-width: 700px) {
-            .headline-main { font-size: 2.6rem; }
-            .headline-main span { font-size: 2rem; }
-            .message-row { flex-direction: column; gap: 8px; }
-            .launch-badge { margin-left: 0; }
-            .headline-card { padding: 32px 24px; }
-        }
-
-        /* --- page 2 card (contact details) --- */
-        .contact-card {
-            max-width: 1000px;
-            width: 100%;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 48px;
-            box-shadow: var(--shadow-xl);
-            border: 1px solid rgba(255,255,255,0.6);
-            padding: 48px 48px 40px;
-            animation: slideReveal 0.8s ease-out;
-        }
-
-        .page-label {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .page-label span {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            color: var(--primary);
-            background: rgba(139,115,85,0.1);
-            padding: 8px 24px;
-            border-radius: 60px;
-            font-weight: 600;
-        }
-
-        .enterprise-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
-        }
-
-        .enterprise-card-item {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: 32px;
-            padding: 32px 24px;
-            transition: all 0.25s ease;
-            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.05);
-        }
-        .enterprise-card-item:hover {
-            transform: scale(1.02) translateY(-5px);
-            border-color: var(--primary-light);
-            box-shadow: 0 25px 35px -12px rgba(139,115,85,0.25);
-        }
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--primary-subtle);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 22px;
-        }
-        .card-content h3 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--gray-400);
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-        .value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-        .detail {
-            color: var(--gray-500);
-            font-size: 0.9rem;
-        }
-        .email-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .email-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--gray-50);
-            padding: 10px 14px;
-            border-radius: 16px;
-            font-size: 0.95rem;
-            border: 1px solid var(--gray-200);
-            transition: background 0.2s;
-            cursor: pointer;
-        }
-        .email-item i {
-            color: var(--primary);
-            width: 18px;
-        }
-        .email-item:hover {
-            background: var(--white);
-            border-color: var(--primary-light);
-        }
-
-        .status-bar {
-            margin-top: 40px;
-            padding: 22px 32px;
-            background: var(--gray-50);
-            border-radius: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-            border: 1px solid var(--gray-200);
-        }
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background: #22C55E;
-            border-radius: 50%;
-            position: relative;
-        }
-        .status-dot::after {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            background: rgba(34, 197, 94, 0.3);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        .badge {
-            background: var(--primary-subtle);
-            padding: 8px 22px;
-            border-radius: 60px;
-            color: var(--primary-dark);
-            font-weight: 600;
-            border: 1px solid var(--primary-light);
-        }
-
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.8); opacity: 0; } }
-
-        /* ========== FOOTER – NOW A SNAP PAGE (final stop) ========== */
-        .footer-page {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            min-height: 5vh;          /* footer occupies full viewport */
-            width: 100%;
-            background: var(--navy);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;   /* push main footer content to bottom */
-            border-top: 2px solid var(--primary-dark);
-        }
-
-        /* inner footer content – centered like previous design */
-        .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 40px 32px 24px;      /* extra top space for breathing */
-            width: 100%;
-        }
-
-        .footer-main-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px 24px;
-        }
-
-        .footer-left p { 
-            color: var(--gray-400); 
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0;
-        }
-
-        .company { 
-            color: var(--primary-light); 
-            font-weight: 600;
-        }
-
-        /* center reserved block */
-        .footer-center {
-            display: flex;
-            justify-content: center;
-            flex: 1 1 auto;
-        }
-
-        .reserved-africa {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255,255,255,0.02);
-            padding: 4px 14px 4px 8px;
-            border-radius: 60px;
-            border: 1px solid var(--primary-dark);
-            margin: 0 auto;
-        }
-
-        .tiny-logo {
-            width: 28px;
-            height: 28px;
+        .donation-wrapper::-webkit-scrollbar-thumb {
             background: var(--primary-light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--navy);
-            box-shadow: 0 0 6px var(--primary-light);
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-        .tiny-logo span {
-            transform: scale(0.8);
-            letter-spacing: 1px;
+            border-radius: 10px;
         }
 
-        .reserved-text {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--gray-300);
-            font-weight: 400;
-        }
-        .reserved-text strong {
-            color: white;
-            font-weight: 600;
-            margin-left: 4px;
-        }
-
-        .footer-right {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        .footer-right a { 
-            color: var(--gray-400); 
-            font-size: 1.2rem; 
-            transition: color 0.2s; 
-        }
-        .footer-right a:hover { 
-            color: var(--primary-light); 
-        }
-
-        .footer-tagline { 
-            text-align: center; 
-            margin-top: 48px;            /* extra spacing before final line */
-            font-size: 0.75rem; 
-            color: var(--gray-500); 
+        .donation-container {
             width: 100%;
-            border-top: 1px solid rgba(139,115,85,0.3);
-            padding-top: 24px;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 32px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255,255,255,0.6);
+            padding: 28px 32px 32px;
+            animation: floatIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* small screen order */
-        @media (max-width: 700px) {
-            .footer-main-row {
-                flex-direction: column;
-                text-align: center;
-            }
-            .footer-center {
-                order: 2;
-                width: 100%;
-            }
-            .footer-left { order: 1; }
-            .footer-right { order: 3; }
+        .donation-container::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            right: -30%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(139,115,85,0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
-        /* page animations unchanged */
         @keyframes floatIn {
             0% { opacity: 0; transform: scale(0.96) translateY(20px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
-        @keyframes slideReveal {
-            0% { opacity: 0; transform: translateX(30px); }
-            100% { opacity: 1; transform: translateX(0); }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--gray-100);
         }
 
-        @media (max-width: 800px) {
-            .enterprise-grid { grid-template-columns: 1fr; }
-            .status-bar { flex-direction: column; align-items: flex-start; }
-            .contact-card { padding: 32px 24px; }
+        .top-bar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--navy);
+            text-decoration: none;
         }
 
-        @media (max-width: 600px) {
-            .headline-main { font-size: 2.2rem; }
-            .headline-main span { font-size: 1.8rem; }
+        .top-bar .brand .brand-icon {
+            width: 34px;
+            height: 34px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 0.7rem;
+        }
+
+        .top-bar .close-btn {
+            color: var(--gray-400);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+        .top-bar .close-btn:hover {
+            color: var(--navy);
+            background: var(--gray-50);
+        }
+
+        /* ===== HEADER ===== */
+        .donation-header {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .donation-header .badge-top {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--primary);
+            background: var(--primary-subtle);
+            padding: 4px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .donation-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .donation-header h1 span {
+            color: var(--primary);
+        }
+
+        .donation-header p {
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            max-width: 400px;
+            margin: 4px auto 0;
+        }
+
+        /* ===== COMPANY REF ===== */
+        .company-ref {
+            background: var(--gray-50);
+            border-radius: 14px;
+            padding: 10px 16px;
+            border: 1px solid var(--gray-200);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 6px 14px;
+            margin-bottom: 14px;
+        }
+
+        .company-ref .ref-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            color: var(--gray-500);
+        }
+
+        .company-ref .ref-item strong {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        .company-ref .ref-item i {
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        .ref-divider {
+            width: 1px;
+            height: 18px;
+            background: var(--gray-200);
+        }
+
+        /* ===== AMOUNT ===== */
+        .amount-section {
+            margin-bottom: 12px;
+        }
+
+        .amount-section label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--navy);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+
+        .amount-option {
+            padding: 8px 4px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--navy);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .amount-option:hover {
+            border-color: var(--primary-light);
+            background: var(--primary-subtle);
+        }
+
+        .amount-option.active {
+            border-color: var(--primary);
+            background: var(--primary-subtle);
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.15);
+        }
+
+        .amount-option .currency {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: var(--gray-400);
+            display: block;
+        }
+
+        .amount-option.custom-option {
+            border-style: dashed;
+            background: transparent;
+            font-size: 0.75rem;
+        }
+
+        .custom-amount-wrap {
+            display: none;
+            margin-top: 6px;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-50);
+            padding: 6px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .custom-amount-wrap.show {
+            display: flex;
+        }
+
+        .custom-amount-wrap input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--navy);
+            outline: none;
+            min-width: 50px;
+            padding: 2px 0;
+        }
+
+        .custom-amount-wrap span {
+            color: var(--gray-400);
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        /* ===== FORM GRID ===== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 14px;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 8px 12px;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            color: var(--navy);
+            background: var(--white);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            width: 100%;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 44px;
+            max-height: 60px;
+        }
+
+        /* ===== PAYMENT METHODS ===== */
+        .payment-methods {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .payment-method {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .payment-method i {
+            font-size: 0.9rem;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-light);
+            background: var(--primary-subtle);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary);
+            background: var(--primary-subtle);
+            color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
+        }
+
+        /* ===== BANK DETAILS ===== */
+        .bank-details-box {
+            background: var(--gray-50);
+            border-radius: 14px;
+            padding: 14px 18px;
+            border: 1px solid var(--gray-200);
+            margin-bottom: 12px;
+            display: none;
+        }
+
+        .bank-details-box.visible {
+            display: block;
+            animation: fadeSlide 0.3s ease;
+        }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(-4px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .bank-details-box h4 {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gray-400);
+            margin-bottom: 8px;
+        }
+
+        .bank-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.75rem;
+        }
+
+        .bank-row:last-child {
+            border-bottom: none;
+        }
+
+        .bank-row .label {
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .bank-row .value {
+            color: var(--navy);
+            font-weight: 600;
+            text-align: right;
+            font-size: 0.75rem;
+        }
+
+        .bank-row .value .copy-btn {
+            margin-left: 6px;
+            font-size: 0.6rem;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .bank-row .value .copy-btn:hover {
+            text-decoration: underline;
+        }
+
+        .bank-note {
+            margin-top: 6px;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+        }
+
+        .bank-note strong {
+            color: var(--navy);
+        }
+
+        /* ===== SUBMIT ===== */
+        .donate-submit {
+            width: 100%;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 20px -6px rgba(139, 115, 85, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .donate-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px -8px rgba(139, 115, 85, 0.45);
+        }
+
+        .donate-submit i {
+            font-size: 1rem;
+        }
+
+        .secure-badge {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .secure-badge i {
+            color: #22C55E;
+        }
+
+        /* ===== FOOTER ===== */
+        .donation-footer {
+            margin-top: 14px;
+            text-align: center;
+            border-top: 1px solid var(--gray-100);
+            padding-top: 12px;
+        }
+
+        .donation-footer p {
+            color: var(--gray-400);
+            font-size: 0.65rem;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--navy);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-xl);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast i {
+            color: #22C55E;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .donation-container { padding: 20px 18px 24px; border-radius: 24px; }
+            .donation-header h1 { font-size: 1.5rem; }
+            .amount-grid { grid-template-columns: repeat(3, 1fr); }
+            .form-grid { grid-template-columns: 1fr; gap: 8px; }
+            .company-ref { flex-wrap: wrap; justify-content: center; gap: 4px 10px; }
+            .ref-divider { display: none; }
+            .payment-methods { flex-direction: row; }
+            .payment-method { min-width: 60px; padding: 6px 10px; font-size: 0.65rem; }
+            .bank-row { flex-direction: column; align-items: flex-start; gap: 2px; }
+            .bank-row .value { text-align: left; }
+            .top-bar .brand { font-size: 0.85rem; }
+            .top-bar .brand .brand-icon { width: 28px; height: 28px; font-size: 0.6rem; }
         }
 
         @media (max-width: 480px) {
-            .logo-image { width: 180px; }
+            body { padding: 8px; }
+            .donation-container { padding: 16px 12px 20px; border-radius: 20px; }
+            .donation-header h1 { font-size: 1.3rem; }
+            .donation-header p { font-size: 0.75rem; }
+            .amount-grid { grid-template-columns: repeat(2, 1fr); }
+            .amount-option { padding: 6px 4px; font-size: 0.75rem; }
+            .form-group input, .form-group select, .form-group textarea { padding: 6px 10px; font-size: 0.75rem; }
+            .donate-submit { padding: 10px 16px; font-size: 0.8rem; }
+            .company-ref .ref-item { font-size: 0.6rem; }
+            .top-bar .brand { font-size: 0.75rem; }
+            .top-bar .brand .brand-icon { width: 24px; height: 24px; font-size: 0.5rem; }
+            .bank-details-box { padding: 10px 12px; }
+            .bank-row { font-size: 0.65rem; }
+        }
+
+        /* Ensure scrolling works on very small screens */
+        @media (max-height: 700px) {
+            .donation-wrapper { max-height: 98vh; }
+            .donation-container { padding: 16px 16px 20px; }
+            .donation-header { margin-bottom: 10px; }
+            .donation-header h1 { font-size: 1.4rem; }
+            .amount-section { margin-bottom: 8px; }
+            .form-grid { gap: 6px 10px; margin-bottom: 8px; }
+            .form-group textarea { min-height: 32px; }
+            .company-ref { padding: 6px 12px; margin-bottom: 10px; }
+            .payment-methods { margin-bottom: 6px; }
+            .bank-details-box { padding: 10px 14px; margin-bottom: 8px; }
+            .donation-footer { margin-top: 8px; padding-top: 8px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- FULL-HEIGHT SCROLL INDICATOR (scrolls all the way to footer) -->
-    <div class="scroll-indicator-full">
-        <a href="#footer-page" class="indicator-inner" id="scrollDownLink">
-            <div class="scroll-line-extended">
-                <div class="moving-dot"></div>
+    <!-- Floating decorative icons -->
+    <div class="float-icon"><i class="fas fa-hand-holding-heart"></i></div>
+    <div class="float-icon"><i class="fas fa-coins"></i></div>
+    <div class="float-icon"><i class="fas fa-university"></i></div>
+    <div class="float-icon"><i class="fas fa-african"></i></div>
+
+    <!-- MAIN DONATION FORM - SINGLE VIEWPORT -->
+    <div class="donation-wrapper">
+        <div class="donation-container">
+
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <a href="#" class="brand">
+                    <span class="brand-icon">ADS</span>
+                    <span>African Development</span>
+                </a>
+                <a href="#" class="close-btn" onclick="history.back(); return false;">
+                    <i class="fas fa-times"></i>
+                </a>
             </div>
-            <span class="scroll-label">scroll</span>
-        </a>
+
+            <!-- Header -->
+            <div class="donation-header">
+                <span class="badge-top"><i class="fas fa-hand-holding-heart"></i> support africa</span>
+                <h1>Make a <span>Donation</span></h1>
+                <p>Building fintech infrastructure for Africa's future.</p>
+            </div>
+
+            <!-- Company Reference -->
+            <div class="company-ref">
+                <span class="ref-item">
+                    <i class="fas fa-building"></i>
+                    <strong>African Development Scheme (Pty) Ltd</strong>
+                </span>
+                <span class="ref-divider"></span>
+                <span class="ref-item">
+                    <i class="fas fa-hashtag"></i>
+                    <strong>Reg:</strong> 201947670007
+                </span>
+                <span class="ref-divider"></span>
+                <span class="ref-item">
+                    <i class="fas fa-university"></i>
+                    <strong>Nedbank</strong> · Sandton
+                </span>
+            </div>
+
+            <!-- Form -->
+            <form id="donationForm" novalidate>
+
+                <!-- Amount -->
+                <div class="amount-section">
+                    <label><i class="fas fa-coins"></i> Select amount (ZAR)</label>
+                    <div class="amount-grid" id="amountGrid">
+                        <button type="button" class="amount-option" data-amount="100">R100</button>
+                        <button type="button" class="amount-option" data-amount="250">R250</button>
+                        <button type="button" class="amount-option active" data-amount="500">R500</button>
+                        <button type="button" class="amount-option" data-amount="1000">R1,000</button>
+                        <button type="button" class="amount-option custom-option" data-amount="custom">
+                            <i class="fas fa-pen"></i> Custom
+                        </button>
+                    </div>
+                    <div class="custom-amount-wrap" id="customAmountWrap">
+                        <span>R</span>
+                        <input type="number" id="customAmount" placeholder="Enter amount" min="1" step="1" />
+                        <span>ZAR</span>
+                    </div>
+                </div>
+
+                <!-- Donor Info -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full name <span class="required">*</span></label>
+                        <input type="text" id="fullName" placeholder="Thabo Mokoena" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" id="email" placeholder="you@example.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="phone" placeholder="+27 82 123 4567" />
+                    </div>
+                    <div class="form-group">
+                        <label>Donation type</label>
+                        <select id="donationType">
+                            <option value="individual">Individual</option>
+                            <option value="corporate">Corporate</option>
+                            <option value="foundation">Foundation</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Message (optional)</label>
+                        <textarea id="message" placeholder="Leave a note of encouragement…"></textarea>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="payment-methods" id="paymentMethods">
+                    <button type="button" class="payment-method active" data-method="eft">
+                        <i class="fas fa-university"></i> EFT
+                    </button>
+                    <button type="button" class="payment-method" data-method="card">
+                        <i class="fas fa-credit-card"></i> Card
+                    </button>
+                    <button type="button" class="payment-method" data-method="mobile">
+                        <i class="fas fa-mobile-alt"></i> Mobile
+                    </button>
+                </div>
+
+                <!-- Bank Details -->
+                <div class="bank-details-box visible" id="bankDetails">
+                    <h4><i class="fas fa-university"></i> EFT Banking Details</h4>
+                    <div class="bank-row">
+                        <span class="label">Account Holder</span>
+                        <span class="value">African Development Scheme (Pty) Ltd</span>
+                    </div>
+                    <div class="bank-row">
+                        <span class="label">Account Number</span>
+                        <span class="value">
+                            201947670007
+                            <button type="button" class="copy-btn" data-copy="201947670007"><i class="far fa-copy"></i></button>
+                        </span>
+                    </div>
+                    <div class="bank-row">
+                        <span class="label">Branch Code</span>
+                        <span class="value">198765</span>
+                    </div>
+                    <div class="bank-row">
+                        <span class="label">Branch</span>
+                        <span class="value">Sandton</span>
+                    </div>
+                    <div class="bank-row">
+                        <span class="label">Account Type</span>
+                        <span class="value">Current Account</span>
+                    </div>
+                    <div class="bank-row">
+                        <span class="label">SWIFT</span>
+                        <span class="value">NEDSZAJJ</span>
+                    </div>
+                    <div class="bank-row" style="margin-top:4px; border-top:2px solid var(--gray-300); padding-top:6px;">
+                        <span class="label" style="font-weight:600;">Reference</span>
+                        <span class="value" style="color:var(--primary); font-size:0.7rem;">Use your <strong>Full Name</strong></span>
+                    </div>
+                    <div class="bank-note">
+                        <i class="fas fa-info-circle"></i> Email proof to <strong>ads2025fintech@gmail.com</strong>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="donate-submit">
+                    <i class="fas fa-arrow-right"></i> Complete Donation
+                </button>
+
+                <div class="secure-badge">
+                    <span><i class="fas fa-lock"></i> Secured via Nedbank</span>
+                    <span><i class="fas fa-shield-alt"></i> PCI compliant</span>
+                    <span><i class="fas fa-receipt"></i> Tax receipt</span>
+                </div>
+
+            </form>
+
+            <!-- Footer -->
+            <div class="donation-footer">
+                <p>© 2026 · African Development Scheme (Pty) Ltd</p>
+            </div>
+
+        </div>
     </div>
 
-    <!-- PAGE 1 : HEADLINE MESSAGE -->
-    <section class="snap-page" id="headline-page">
-        <div class="container">
-            <div class="headline-card">
-                <div class="pre-headline">
-                    <span>institutional launch · q3 2026</span>
-                </div>
-                
-                <!-- LARGE LOGO (preserved) -->
-                <div class="logo-img-placeholder">
-                    <img src="/assets/images/IMG-20251021-WA0002-removebg-preview.png" alt="ADS Fintech logo" class="logo-image">
-                </div>
-
-                <h1 class="headline-main">
-                    African Development Scheme
-                    <span>fintech platform</span>
-                </h1>
-
-                <div class="headline-message-page">
-                    <div class="message-row">
-                        <i class="fa-regular fa-compass message-icon"></i>
-                        <div class="message-content">
-                            <strong>Bypassing traditional funding mechanisms</strong> — offering new ways of doing things.
-                            <span class="launch-badge">Launching Q3 2026</span>
-                        </div>
-                    </div>
-                    <div class="divider-light"></div>
-                    <div class="message-row">
-                        <i class="fa-regular fa-calendar-clock message-icon"></i>
-                        <div class="message-content">
-                            <strong>Schedule revamp in progress</strong> — we are currently undergoing a scheduled revamp to serve you better. We will go‑live soon.
-                        </div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 48px; text-align: center; opacity: 0.4; font-size: 0.8rem; color: var(--gray-400);">
-                    <span>—— page 1/3 · scroll down ——</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PAGE 2 : CONTACT DETAILS -->
-    <section class="snap-page page-contact" id="contact-page">
-        <div class="container">
-            <div class="contact-card">
-                <div class="page-label">
-                    <span>authorised contact channels</span>
-                </div>
-
-                <div class="enterprise-grid">
-                    <div class="enterprise-card-item">
-                        <div class="card-icon"><i class="fas fa-user-tie"></i></div>
-                        <h3>principal officer</h3>
-                        <div class="value">T. Ngqalo</div>
-                        <div class="detail">executive director</div>
-                    </div>
-
-                    <div class="enterprise-card-item">
-                        <div class="card-icon"><i class="fas fa-envelope-open-text"></i></div>
-                        <h3>email directory</h3>
-                        <div class="email-list">
-                            <div class="email-item" data-email="ads2025fintech@gmail.com">
-                                <i class="fas fa-envelope"></i> ads2025fintech@gmail.com
-                            </div>
-                            <div class="email-item" data-email="tngqalo@gmail.com">
-                                <i class="fas fa-envelope"></i> tngqalo@gmail.com
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="enterprise-card-item">
-                        <div class="card-icon"><i class="fas fa-phone-alt"></i></div>
-                        <h3>direct line</h3>
-                        <div class="value" id="phoneValue">+27 65 824 4709</div>
-                        <div class="detail">weekdays 08:00 – 17:00 SAT</div>
-                        <div style="margin-top: 12px; color: var(--primary); font-size:0.85rem;"><i class="fa-brands fa-whatsapp"></i> signal / whatsapp business</div>
-                    </div>
-                </div>
-
-                <div class="status-bar">
-                    <div class="status-indicator">
-                        <span class="status-dot"></span>
-                        <span class="status-text">platform status: <strong>commercialisation phase</strong></span>
-                    </div>
-                    <div class="badge"><i class="fas fa-rocket"></i> q3 2026 launch</div>
-                </div>
-
-                <div style="margin-top: 32px; text-align: center; opacity: 0.4; font-size: 0.8rem; color: var(--gray-400);">
-                    <span>—— page 2/3 · contact & legal ——</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PAGE 3 : FOOTER – FINAL STOP (full viewport) with reserved AFRINCA centered -->
-    <footer class="footer-page" id="footer-page">
-        <div class="footer-content">
-            <div class="footer-main-row">
-                <!-- left: copyright -->
-                <div class="footer-left">
-                    <p>© 2026 · <span class="company">Africa Development Scheme (Pty) Ltd</span></p>
-                </div>
-
-                <!-- MIDDLE: reserved africa block – perfectly centered -->
-               
-
-                <!-- right: social icons -->
-                
-            </div>
-            <div class="footer-tagline">
-                <span>generational resonance · fintech infrastructure for africa</span>
-            </div>
-            <!-- tiny hint that this is the end -->
-            <div style="text-align: center; margin-top: 24px; opacity: 0.5; font-size: 0.7rem; color: var(--gray-500);">
-                <span>⏎ end of page · footer final</span>
-            </div>
-        </div>
-    </footer>
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Thank you for your donation!</span>
+    </div>
 
     <script>
         (function() {
-            document.querySelectorAll('.email-item').forEach(el => {
-                const email = el.getAttribute('data-email') || el.innerText.trim();
-                el.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    window.location.href = `mailto:${email}`;
+            const form = document.getElementById('donationForm');
+            const customWrap = document.getElementById('customAmountWrap');
+            const customInput = document.getElementById('customAmount');
+            const bankDetails = document.getElementById('bankDetails');
+            const paymentBtns = document.querySelectorAll('.payment-method');
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+
+            let selectedAmount = 500;
+            let selectedMethod = 'eft';
+
+            // Amount selection
+            document.querySelectorAll('.amount-option').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.amount-option').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const val = this.dataset.amount;
+                    if (val === 'custom') {
+                        customWrap.classList.add('show');
+                        customInput.focus();
+                        selectedAmount = parseFloat(customInput.value) || 0;
+                    } else {
+                        customWrap.classList.remove('show');
+                        selectedAmount = parseFloat(val);
+                        customInput.value = '';
+                    }
                 });
             });
 
-            const phoneEl = document.getElementById('phoneValue');
-            if (phoneEl) {
-                phoneEl.addEventListener('click', () => {
-                    navigator.clipboard?.writeText('+27658244709').then(() => {
-                        alert('📋 number copied (international: +27 65 824 4709)');
-                    }).catch(() => alert('Press ⌘C to copy'));
+            customInput.addEventListener('input', function() {
+                selectedAmount = parseFloat(this.value) || 0;
+                document.querySelectorAll('.amount-option').forEach(b => b.classList.remove('active'));
+                document.querySelector('.amount-option.custom-option')?.classList.add('active');
+                if (selectedAmount > 0) {
+                    customWrap.classList.add('show');
+                }
+            });
+
+            // Payment method toggle
+            paymentBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    paymentBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedMethod = this.dataset.method;
+                    if (selectedMethod === 'eft') {
+                        bankDetails.classList.add('visible');
+                    } else {
+                        bankDetails.classList.remove('visible');
+                    }
                 });
-                phoneEl.style.cursor = 'copy';
+            });
+
+            // Copy buttons
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const text = this.dataset.copy;
+                    navigator.clipboard?.writeText(text).then(() => {
+                        showToast('Copied: ' + text);
+                    }).catch(() => {
+                        const range = document.createRange();
+                        const dummy = document.createElement('span');
+                        dummy.textContent = text;
+                        dummy.style.position = 'fixed';
+                        dummy.style.opacity = '0';
+                        document.body.appendChild(dummy);
+                        range.selectNode(dummy);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(range);
+                        document.execCommand('copy');
+                        document.body.removeChild(dummy);
+                        showToast('Copied: ' + text);
+                    });
+                });
+            });
+
+            // Toast
+            function showToast(msg) {
+                toastMsg.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toast._timer);
+                toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
             }
 
-            // Scroll indicator now goes to footer page
-            const scrollLink = document.getElementById('scrollDownLink');
-            if (scrollLink) {
-                scrollLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.getElementById('footer-page').scrollIntoView({ behavior: 'smooth' });
-                });
-            }
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-            console.log('✅ Footer is the final snap page · reserved AFRINCA centered');
+                if (!selectedAmount || selectedAmount < 1) {
+                    showToast('⚠️ Please select or enter a donation amount.');
+                    return;
+                }
+
+                const name = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                if (!name) {
+                    showToast('⚠️ Please enter your full name.');
+                    document.getElementById('fullName').focus();
+                    return;
+                }
+                if (!email || !email.includes('@')) {
+                    showToast('⚠️ Please enter a valid email address.');
+                    document.getElementById('email').focus();
+                    return;
+                }
+
+                const donationData = {
+                    amount: selectedAmount,
+                    currency: 'ZAR',
+                    name: name,
+                    email: email,
+                    phone: document.getElementById('phone').value.trim(),
+                    type: document.getElementById('donationType').value,
+                    message: document.getElementById('message').value.trim(),
+                    method: selectedMethod,
+                };
+
+                console.log('💰 Donation Data:', donationData);
+
+                showToast(`✅ Thank you, ${name}! Your donation of R${selectedAmount} has been recorded.`);
+                form.reset();
+
+                document.querySelectorAll('.amount-option').forEach(b => b.classList.remove('active'));
+                document.querySelector('.amount-option[data-amount="500"]')?.classList.add('active');
+                customWrap.classList.remove('show');
+                customInput.value = '';
+                selectedAmount = 500;
+
+                if (selectedMethod === 'eft') {
+                    bankDetails.classList.add('visible');
+                }
+            });
+
+            console.log('✅ Donation form ready · African Development Scheme');
         })();
     </script>
+
 </body>
 </html>
